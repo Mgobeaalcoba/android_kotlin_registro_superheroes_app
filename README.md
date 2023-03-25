@@ -25,19 +25,18 @@ Instala la aplicación con los siguientes pasos:
 
 Usa esto en tu terminal para clonar tu repositorio:
 ```bash
-git clone https://github.com/hackaprende/android-kotlin-registro-de-superheroes.git
+git clone https://github.com/Mgobeaalcoba/android_kotlin_registro_superheroes_app.git
 ```
-También puedes descargarla como Zip
+También puedes descargarla como Zip en caso de que aún no sepas usar Git & Github
 
-**Paso 2: Has checkout al branch ‘starter’**
+**Paso 2: Abre el proyecto en Android Studio**
 
-El proyecto tiene dos branches: starter es para que tú mismo(a) desarrolles la app y master es la app ya terminada, para
-trabajar con uno u otro escribe lo siguiente en la terminal
-```bash
-git checkout starter
-```
-El branch de starter solo mostrará un texto "Hello world" en una pantalla blanca.
+Abre Android Studio y selecciona "Open project". Luego busca en tu directorio donde clonaste (o descargaste y descomprimiste) el proyecto. Selecciona la carpeta raiz del mismo y dale aceptar. Listo! Ya estás en el proyecto. Y puedas ver como está compuesto. Sus archivos Kotlin para armar la lógica de la app. Sus archivos XML para ver el layout y el diseño de cada Activity.
 
 **Paso 3: Ejecuta el proyecto y revisa que funcione correctamente**
 
-Abre el proyecto en Android Studio y ejecútalo con el botón "run"
+Abre el proyecto en Android Studio y ejecútalo con el botón "run". Previamente debes tener creado un dispositivo de emulación o en su defecto emparejado un dispositivo físico Android donde puedas instalar y luego ejecutar la app.
+
+Proximamente en Play Store!!!
+
+**Developer: Mariano Gobea Alcoba gobeamariano@gmail.com**
