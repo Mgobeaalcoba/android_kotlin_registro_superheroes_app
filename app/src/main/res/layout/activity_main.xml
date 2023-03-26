@@ -83,7 +83,7 @@
             android:layout_below="@id/power_text"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
-            android:progressTint="@color/black" />
+            android:progressTint="@color/yellow" />
 
         <Button
             android:id="@+id/save_button"

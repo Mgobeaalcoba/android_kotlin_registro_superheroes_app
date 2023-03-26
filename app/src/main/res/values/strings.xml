@@ -6,4 +6,6 @@
     <string name="bio_hint">Bio description</string>
     <string name="power">Poder</string>
     <string name="save">Save</string>
+    <string name="hero_name">Iron man</string>
+    <string name="Alter_ego_name">Tony Stark</string>
 </resources>
