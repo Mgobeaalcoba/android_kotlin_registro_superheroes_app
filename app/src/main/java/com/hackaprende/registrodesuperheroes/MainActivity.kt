@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.graphics.drawable.toBitmap
 import com.hackaprende.registrodesuperheroes.databinding.ActivityMainBinding
 
@@ -14,6 +15,15 @@ class MainActivity : AppCompatActivity() {
 
     // Inicializo una lateinit var: variable no se inicializará en el momento de la declaración, sino que se inicializará más tarde:
     private lateinit var heroImage : ImageView // Al ser lateinit var puedo evitar que la misma sea nula ya que es una promesa de que luego la voy a inicializar antes de usarla.
+    private var heroBitmap: Bitmap? = null
+
+    // Variable que reemplaza a la función onActivityResult por deprecada:
+    private val getContent = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) {
+            bitmap ->
+        heroBitmap = bitmap
+        heroImage.setImageBitmap(heroBitmap)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
@@ -68,12 +78,19 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun openCamera() {
+        getContent.launch(null)
+        /* Comentamos porque "startActivityForResult tmb está deprecada:
+
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE) // Implicit intent
         startActivityForResult(cameraIntent, 1000) // Es una indicación de comenzar el intent y esperar un resultado. El requestCode
         // puede ser cualquiera mientras no se repita el mismo en una misma Activity. Aca se abre la camara del telefono.
+
+        */
     }
 
-    // función que se va a llamar automaticamente cuando volvamos de tomar una foto:
+    /* Comentamos esta parte dado que onActivityResult ya está deprecado y no tiene mantenimiento:
+
+     // función que se va a llamar automaticamente cuando volvamos de tomar una foto:
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -83,4 +100,6 @@ class MainActivity : AppCompatActivity() {
             heroImage.setImageBitmap(heroBitmap)
         }
     }
+
+     */
 }

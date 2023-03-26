@@ -494,6 +494,86 @@ binding.heroImage.setImageBitmap(bitmap)
 
 Truco: Con shift+F6 puedo pedirle al IDE que me cambie el nombre de una variable en todo el proyecto o archivo. Por ejemplo el id de una View. 
 
+-------------------------------------------
+
+Activity Result API. El reemplazo de override fun onActivityResult() {}:
+
+1- onActivityResult y startActivityResult son dos metodos o funciones que para el 2020 ya estaban deprecados. Es decir, no reciben mas mantenimiento pero funcionan. 
+
+2- En la actualidad se está usando Activity Result API que vamos a ver en el archivo .kt como funciona. 
+
+Pasos: 
+
+1- Vamos a crear una variable que es la que va a manejar el resultado de haber tomado una foto. Esta variable va a reemplazar a la función onActivityResult()
+
+2- Quedaría así: 
+
+    val getContent = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) {
+        bitmap ->
+        heroBitmap = bitmap
+        heroImage.setImageBitmap(heroBitmap)
+    }
+
+3- Importante: Para poder usar "registerForActivityResult" y "ActivityResultContracts" es necesario tener instalada la dependencia "implementation 'androidx.appcompat:appcompat:1.4.0'" o superior. Caso contrario no los reconoce. 
+
+4- Explicación sobre la variable getContent que armamos: 
+
+Esta línea de código utiliza la API de resultados de actividades de Android (Activity Results API) para registrar una actividad que toma una foto y luego manejar el resultado de esa actividad.
+
+Veamos cada parte de la línea de código:
+
+val getContent = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+    heroBitmap = bitmap
+}
+
+val getContent = es una declaración de variable que crea una nueva variable llamada getContent y le asigna un valor. En este caso, el valor que se le asigna a getContent es una instancia de ActivityResultLauncher.
+
+registerForActivityResult es un método que se utiliza para registrar una actividad que espera un resultado. Este método toma como argumento un objeto de tipo ActivityResultContract, que describe la actividad que se va a lanzar y el tipo de resultado que se espera.
+
+ActivityResultContracts.TakePicturePreview() es un objeto de clase TakePicturePreview que se utiliza para describir la actividad que se va a lanzar. En este caso, se está lanzando una actividad para tomar una foto previa.
+
+{ bitmap -> heroBitmap = bitmap } es una función lambda que se ejecuta cuando la actividad que se lanzó devuelve un resultado. La función lambda toma un argumento de tipo Bitmap, que es el resultado que se espera de la actividad. En este caso, la función lambda asigna el valor del Bitmap a la variable heroBitmap.
+
+En resumen, esta línea de código registra una actividad que toma una foto previa y espera un resultado. Cuando se completa la actividad y se recibe un resultado, la función lambda asigna el resultado a la variable heroBitmap.
+
+--------
+
+registerForActivityResult es una función de orden superior que toma como argumento una instancia de ActivityResultContract y una función lambda que se ejecuta cuando se recibe un resultado de la actividad que se lanzó.
+
+La función registerForActivityResult devuelve una instancia de ActivityResultLauncher, que es una clase que se utiliza para lanzar la actividad y recibir el resultado. Por lo tanto, al asignar el resultado de registerForActivityResult a la variable getContent, se está creando una nueva instancia de ActivityResultLauncher que se puede utilizar para lanzar la actividad y recibir el resultado.
+
+En resumen, getContent es una variable que contiene una instancia de ActivityResultLauncher que se puede utilizar para lanzar una actividad y recibir el resultado de esa actividad a través de una función lambda.
+
+5- Ya podemos deshacernos de onActivityResult y ahora queda depurar la forma en la que llamamos a la camara:
+- Modificamos la función openCamera():
+- Quitamos las dos lineas que ya teniamos. A saber: 
+
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE) // Implicit intent
+        startActivityForResult(cameraIntent, 1000)
+
+- Agregamos: 
+
+    private fun openCamera() {
+        getContent.launch(null)
+    }
+
+-------------------------------------
+
+¿Como guardamos las fotos en memoria para que se guarden con mejor calidad? 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
