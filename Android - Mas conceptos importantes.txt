@@ -612,6 +612,14 @@ Luego reconstruimos la imagen en DetailActivity copiando la forma en la que lo c
 
 Y ya pasamos la imagen en buena calidad de una view a la otra. 
 
+------------------------------
+
+Agregar scroolview a nuestra app para cuando las pantallas son largas: 
+
+Truco: Podemos ir desde MainActivity hasta "activity_main" tocando "Ctrl+Click sobre "ActivityMainBinding" cuando cargamos la variable binding en MainActivity
+
+
+
 
 
 

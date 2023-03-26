@@ -5,85 +5,104 @@
     <data>
 
     </data>
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
         tools:context=".MainActivity">
 
-        <ImageView
-            android:id="@+id/superhero_image"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_camera"/>
+        <!--
+        Scroll View por fuera del layout que tiene todas las demas views para
+        que quede al final y el recorrido del scroll debe quedar terminar arriba
+        del save_button.
+        -->
 
-        <EditText
-            android:id="@+id/superhero_name_edit"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/superhero_image"
-            android:layout_marginStart="16dp"
-            android:layout_toEndOf="@id/superhero_image"
-            android:hint="@string/superhero_name" />
+            android:layout_height="match_parent"
+            android:layout_above="@+id/save_button"
+            android:layout_alignParentTop="true">
 
-        <EditText
-            android:id="@+id/alter_ego_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/superhero_image"
-            android:layout_marginStart="16dp"
-            android:layout_toEndOf="@id/superhero_image"
-            android:hint="@string/alter_ego" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/superhero_image"
-            android:layout_marginTop="16dp"
-            android:background="@color/black" />
+                <ImageView
+                    android:id="@+id/superhero_image"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@android:drawable/ic_menu_camera"/>
 
-        <TextView
-            android:id="@+id/bio_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/divider"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="@string/bio"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+                <EditText
+                    android:id="@+id/superhero_name_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/superhero_image"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/superhero_image"
+                    android:hint="@string/superhero_name" />
 
-        <EditText
-            android:id="@+id/bio_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/bio_title"
-            android:layout_marginTop="8dp"
-            android:hint="@string/bio_hint" />
+                <EditText
+                    android:id="@+id/alter_ego_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/superhero_image"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/superhero_image"
+                    android:hint="@string/alter_ego" />
 
-        <TextView
-            android:id="@+id/power_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/bio_edit"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:text="@string/power"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/superhero_image"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/black" />
 
-        <RatingBar
-            android:id="@+id/power_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/power_text"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:progressTint="@color/yellow" />
+                <TextView
+                    android:id="@+id/bio_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    android:text="@string/bio"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/bio_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/bio_title"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/bio_hint" />
+
+                <TextView
+                    android:id="@+id/power_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/bio_edit"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/power"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <RatingBar
+                    android:id="@+id/power_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/power_text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:progressTint="@color/yellow" />
+
+            </RelativeLayout>
+        </ScrollView>
 
         <Button
             android:id="@+id/save_button"
