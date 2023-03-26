@@ -1,5 +1,6 @@
 package com.hackaprende.registrodesuperheroes
 
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.hackaprende.registrodesuperheroes.databinding.ActivityDetailBinding
@@ -13,8 +14,9 @@ class DetailActivity : AppCompatActivity() {
     */
     companion object {
 
-        // Establezco la key del objeto completo que voy a pasar:
+        // Establezco la key del objeto completo que voy a pasar y la key del Bitmap:
         const val SUPERHERO_KEY = "superhero"
+        const val BITMAP_KEY = "bitmat"
 
         /* Dado que estamos pasando el objeto completo carece de sentido tener todas estas keys en el companion object:
         const val SUPERHERO_NAME_KEY = "superhero_name"
@@ -32,8 +34,9 @@ class DetailActivity : AppCompatActivity() {
         // Levantamos todo lo que nos traemos de MainActivity:
         val bundle = intent.extras!! // Estos son los extras que pasamos desde MainActivity. Le especifico que no pueden venir nulos con !!
 
-        // Recupero el objeto en una nueva variable:
+        // Recupero el objeto y el bitmap en nuevas variable:
         val superhero = bundle.getParcelable<SuperHero>(SUPERHERO_KEY)!! // Advertimos que no puede devolver null
+        val bitmap = bundle.getParcelable<Bitmap>(BITMAP_KEY)!!
 
         /* Ahora que recibimos el objeto parcelable entero ya no necesitamos esto sino recuperar el objeto completo en una nueva variable:
         val superHeroName = bundle.getString(SUPERHERO_NAME_KEY) ?: "" // Elvis operator: En caso de que vengan nulos lo transformo en cadenas vacias.
@@ -57,6 +60,7 @@ class DetailActivity : AppCompatActivity() {
         // Especificamos q el superhero que levantamos es el objeto que queremos mostrar de
         // clase SuperHero en nuestro data binding:
 
+        binding.heroImage.setImageBitmap(bitmap)
         binding.superhero = superhero
     }
 }

@@ -14,17 +14,17 @@
         android:layout_height="match_parent"
         tools:context=".DetailActivity">
 
-        <!--
+
         <ImageView
             android:id="@+id/hero_image"
-            android:layout_width="413dp"
-            android:layout_height="275dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
-        -->
 
         <TextView
             android:id="@+id/hero_name_text"

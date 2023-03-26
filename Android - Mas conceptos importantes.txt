@@ -340,6 +340,185 @@ otra.
 
 Este "intent" va a enviar información desde "this", es decir, esta activity, a otra activity, en este caso DetailActivity
 
+Hay dos tipos de "Intent": 
+
+1- Explicits intents: Como el que hicimos para pasar de MainActivity a DetailActivity donde explicitamos desde donde estamos y hacia donde vamos.
+2- Implicits intents: Lo vamos a usar cuando queramos tomar fotos. 
+
+Truco: con dos veces "shift" se abre un buscador que nos permite entontrar de forma agil cualquier clase o archivo creado. 
+
+Una vez que escuchamos toda la info que nos carga el usuario en la MainActivity debemos guardarla en variables para leugo enviarla a la DetailActivity
+
+Una vez enviada podemos recibirla en la segunda activity si previamente hemos creado la conexion con el layout vía dataBinding. 
+
+----------------------------
+
+Explicite intent: 
+
+¿como pasar un objeto completo de una activity a otra en lugar de pasar valor por valor como hicimos con el "intent" con putExtra y el companion object en el receptor?
+
+Necesitamos la librería "kotlin-parcelize" que debe ser importada en "build.gradle (:app)". Para que esto funcione necesitamos dos condiciones adicionales: 
+1- En build.gradel (:project) tenemos que tener dependencias "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20" o superior para que funcioné.
+2- No podemos aplicar "kotlin-parcelize" junto con "kotlin-android-extensions". Uno u el otro. 
+
+Paso a paso: 
+
+1- Creamos una nueva clase "hero" para poder crear un nuevo objeto/instanciación de esa clase "hero". ¿Como? Boton derecho sobre "com.{empresa}.{proyecto}" -> "New" -> "Kotlin File/Class"
+2- Construimos la clase "hero":
+
+class SuperHero (superHeroName: String, alterEgo: String, bio: String, power: Float)
+
+3- Instanciamos en "MainActivity" un nuevo SuperHero
+
+4- Lo pasamos como intent.putExtra(SUPERHERO_KEY, superhero)
+
+5- Modificamos el companion object de "DetailActivity.kt" para que la unica KEY sea SUPERHERO_KEY
+
+6- intent.putExtra() no acepta un objeto completo para pasar de una activity a otra. Para hacerlo primero debemos parcelarlo (convertirlo a bytes) y luego reconstruirlo en nuestra nueva activity ¿Como?:
+
+Escribiendo arriba del nombre de la clase a la que pertenece el objeto que queremos pasar @Parcelize arriba de la linea donde la declaramos. Nos va a pedir que declaremos que la clase es de un SuperType : Parcelable. El IDE lo hace por nosotros luego de Alt+Enter. 
+
+7- Con esto se quita el error de putExtra.
+
+------------------------------
+
+Variables en data binding: 
+
+1- Con data binding no solo podemos cargar nuestro template de forma mas rapida en el momento de la compilación sino que también podemos guardar nuestras variables logicas (en archivos .kt) que queremos mostrar en nuestros layout (archivos .xml) de forma tal que podemos ahorrarnos luego las lineas de codigo lógico donde le decimos a nuestro .kt que tiene que reemplazar los textos por información guardada en variables. Para eso debemos cargar las variables en nuestro archivo .xml:
+
+    <data>
+        <variable
+            name="superhero"
+            type="com.hackaprende.registrodesuperheroes.SuperHero" />
+    </data>
+
+2- Luego de cargadas las variables. Una variable por clase. Ya podemos quitar de nuestro .kt las lineas donde especificamos el texto que queremos mostrar. 
+
+3- Tenemos que especificar en el file de nuestra activity que el superhero que levantamos de la anterior activity es el objeto que queremos mostrar de tipo SuperHero en nuestro data binding así: 
+
+binding.superhero = superhero
+
+-------------------------------
+
+Implicit intents: Pasar fotos de una activity a otra mediante un implicit intent: 
+
+1- Escuchamos los click sobre la imagen de la camara:
+
+binding.superheroImage.setOnClickListener {
+            
+        }
+
+Se puede agregar un onClickListener a cualquier tipo de View. No solamente a un boton. 
+
+2- Llamamos a un nuevo metodo que se llame openCamera() y lo creamos:
+
+        binding.superheroImage.setOnClickListener {
+            openCamera()
+        }
+
+    }
+
+    private fun openCamera() {
+        
+    }
+
+3- Dentro la nueva función (o metodo?) llamada openCamara vamos a crear el implicit intent para abrir la camara:
+
+ private fun openCamera() {
+
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE) // Implicit intent
+	  tartActivityForResult(cameraIntent, 1000) // Es una indicación de comenzar el intent y esperar un resultado. 		El requestCode
+        	// El request code (1000 en este caso) puede ser cualquiera mientras no se repita el mismo en una misma 		Activity. Aca se abre la camara del telefono. 
+
+    }
+
+Es implicito, porque Android como SO decide con que aplicación de camara va a abrir el intent. No lo establemos nosotros de forma explicita como hicimos en el intent que conecta la MainActivity (this) con el DetailActivity:
+
+    private fun openDetailActivity(superhero : SuperHero) {
+
+        // Creamos in intent activity:
+        val intent = Intent(this, DetailActivity::class.java) // Explicit intent
+
+        // Solo voy a pasar como putExtra el objeto superhero:
+        intent.putExtra(SUPERHERO_KEY, superhero)
+
+        startActivity(intent) // Con esto estamos enviando todos los put extra a DetailActivity
+    }
+
+4- ¿Como recibimos la imagen que vamos a tomar? con la override fun "onActivityResult" que es una función que Android Studio ya nos trae precargada. Esta función se va a llamar automaticamente cuando volvamos de tomar una foto. Se implementa así: 
+
+// Inicializo una lateinit var: variable no se inicializará en el momento de la declaración, sino que se inicializará más tarde:
+
+    private lateinit var heroImage : ImageView
+
+ // Inicializo a mi "lateinit var":
+
+        heroImage = binding.superheroImage
+        heroImage.setOnClickListener {
+            openCamera()
+        }
+
+ // función que se va a llamar automaticamente cuando volvamos de tomar una foto:
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK && requestCode == 1000) {
+            val extras = data?.extras // Si la camara falla puedo no devolver bien las imagenes. Por ello el operador "?"
+            val heroBitmap = extras?.getParcelable<Bitmap>("data")
+            heroImage.setImageBitmap(heroBitmap)
+        }
+    }
+
+5- Chequeamos en el emulador que la camara funciones correctamente. Para mover la camara mantengo "shift" apretado y la muevo con el mouse. 
+
+6- Funciona la camara. Guarda la foto y la muestra en mi MainActivity. 
+
+7- Ahora hay que pasar la foto de la MainActivity hacia el DetailActivity con un intent. Lo vamos a hacer en el mismo "openDetalActivity" en el que estamos mandando al objeto superhero de una activity a la otra con una nueva key en el companion object del DetailActivity llamada BITMAT_KEY
+
+8- Bitmap es una clase de Java que ya implementa en su clase un parcelable. Por lo que no tenemos que agregar el @parcelable como hicimos con nuestra clase SuperHero. Eso lo podemos constatar haciendo Ctrl+Click en la clase "Bitmap". 
+
+9- Ahora pasamos como un segundo putExtra solo el Bitmap de heroImage así: 
+
+intent.putExtra(DetailActivity.BITMAP_KEY, heroImage.drawable.toBitmap())
+
+10- En DetailActivity vamos a recibir ese Bitmap y a mostrarlo en el layout así: 
+
+Recibo: 
+
+val bitmap = bundle.getParcelable<Bitmap>(BITMAP_KEY)!!
+
+Muestro: 
+
+binding.heroImage.setImageBitmap(bitmap)
+
+Truco: Con shift+F6 puedo pedirle al IDE que me cambie el nombre de una variable en todo el proyecto o archivo. Por ejemplo el id de una View. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
 
 
 
