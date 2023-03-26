@@ -1,6 +1,7 @@
 package com.hackaprende.registrodesuperheroes
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.hackaprende.registrodesuperheroes.databinding.ActivityDetailBinding
@@ -36,7 +37,13 @@ class DetailActivity : AppCompatActivity() {
 
         // Recupero el objeto y el bitmap en nuevas variable:
         val superhero = bundle.getParcelable<SuperHero>(SUPERHERO_KEY)!! // Advertimos que no puede devolver null
+
+        /* Debemos editar esta linea para recibir un path en lugar del bitmap y luego construirlo acá:
         val bitmap = bundle.getParcelable<Bitmap>(BITMAP_KEY)!!
+        */
+        val bitmapDirectory = bundle.getString(BITMAP_KEY)!!
+        val bitmap = BitmapFactory.decodeFile(bitmapDirectory)
+        // Con esto ya no debería romperse al pasar la imagen de una view a la otra.
 
         /* Ahora que recibimos el objeto parcelable entero ya no necesitamos esto sino recuperar el objeto completo en una nueva variable:
         val superHeroName = bundle.getString(SUPERHERO_NAME_KEY) ?: "" // Elvis operator: En caso de que vengan nulos lo transformo en cadenas vacias.

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Con este provider solo le estoy dando permiso a la camara a que valla la carpeta Environment.DIRECTORY_PICTURES
+que cree al momento de establecer el "fileDirectory" en el MainActivity:
+-->
+<paths>
+    <external-files-path
+        name="superhero_images"
+        path="."/>
+</paths>

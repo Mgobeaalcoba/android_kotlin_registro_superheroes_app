@@ -561,6 +561,61 @@ En resumen, getContent es una variable que contiene una instancia de ActivityRes
 
 ¿Como guardamos las fotos en memoria para que se guarden con mejor calidad? 
 
+Con TekePicturePreview() solo conseguimos una preview o imagen de mala calidad.
+
+Para guardar la imagen en memoría y poder mostrarla en mejor calidad vamos a seguir usando ActiveResultAPI pero ya no con el metodo TakePicturePreview() sino con: TakePicture() -> Preview nos devolvía un Bitmat que luego guardabamos en nuestra variable heroBitmap. Pero ahora nos va a devolver un Boolean 
+
+Ver el codigo en MainActivity:
+
+Tener en cuenta que: Si la versión de Android del telefono es anterior a Android N o Nougat (API 24) se hace una manera y si es superior se hace de otra manera. El codigo ya está armado para realizar cualquiera de los dos caminos. 
+
+Luego tengo que modificar los permisos en AndroidManifest.XML: 
+
+        <provider
+            android:authorities="${applicationId}.provider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+Un provider es un permiso a otras aplicaciones para cederle datos de nuestra aplicación. 
+
+applicationId debe ser reemplazado por el nombre de nuestra app. En este caso: com.hackaprende.registrodesuperheroes
+
+"xml/provider_paths" no existe por el momento por lo que lo voy a crear: 
+
+1- Boton derecho sobre "res" -> "New" -> "Android Resource Directory" y lo llamo "xml" y su Resource Type tmb es "xml"
+2- Dentro de esa carpeta creo un "xml resource file". Este archivo es el que va a definir a dónde van a ir las otras aplicaciones a las que les mandemos la "uri", a dónde van a ir a buscar nuestros archivos.
+
+El archivo debe verse así: 
+
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Con este provider solo le estoy dando permiso a la camara a que valla la carpeta Environment.DIRECTORY_PICTURES
+que cree al momento de establecer el "fileDirectory" en el MainActivity:
+-->
+<paths>
+    <external-files-path
+        name="superhero_images"
+        path="."/>
+</paths>
+
+Al tener una imagen de mejor calidad, al pasar la imagen de una activity a otra esto provoca que la app se cierre. Por tal motivo debemos cambiar la config del intent.putExtra(DetailActivity.HERO_BITMAP_KEY, heroImage.drawable.toBitmap() reemplazando la imagen en si que es muy grande por el path (DetailActivity.HERO_BITMAP_KEY, picturePath). 
+
+Esto lo podemos ver investigando que nos indica el logcat ( Caused by: android.os.TransactionTooLargeException: data parcel size 4915968 bytes ).
+
+
+Luego reconstruimos la imagen en DetailActivity copiando la forma en la que lo construimos en MainActivity. 
+
+Y ya pasamos la imagen en buena calidad de una view a la otra. 
+
+
+
+
+
 
 
 
