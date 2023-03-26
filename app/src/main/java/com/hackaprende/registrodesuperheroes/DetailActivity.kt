@@ -42,10 +42,21 @@ class DetailActivity : AppCompatActivity() {
         val power = bundle.getFloat(POWER_KEY)
         */
 
-        // Obtenidos los valores que traigo de MainActivity los voy a mostrar en esta nueva activity:
+        /* Ya podemos quitar estas lineas donde mostramos el contenido de nuestro objeto en el layout dado que ya cargamos
+        la variable superhero en la "data" del data binding del layout:
+
+        Obtenidos los valores que traigo de MainActivity los voy a mostrar en esta nueva activity:
+
         binding.heroNameText.text = superhero.superHeroName
         binding.alterEgoText.text = superhero.alterEgo
         binding.bioText.text = superhero.bio
         binding.powerBar.rating = superhero.power
+
+        */
+
+        // Especificamos q el superhero que levantamos es el objeto que queremos mostrar de
+        // clase SuperHero en nuestro data binding:
+
+        binding.superhero = superhero
     }
 }

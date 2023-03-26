@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="superhero"
+            type="com.hackaprende.registrodesuperheroes.SuperHero" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:padding="16dp"
-            android:text="@string/hero_name"
+            android:text="@{superhero.superHeroName}"
             android:textColor="@color/black"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +57,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="@string/Alter_ego_name"
+            android:text="@{superhero.alterEgo}"
             android:textColor="@color/black"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +82,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            tools:text="Genius, millionaire, playboy, philanthropist"
+            android:text="@{superhero.bio}"
             android:textColor="@color/black"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -107,6 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:progressTint="@color/yellow"
+            android:rating="@{superhero.power}"
             android:isIndicator="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
